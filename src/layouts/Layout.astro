@@ -1,7 +1,6 @@
 ---
 import { ViewTransitions } from "astro:transitions";
 import { Config } from "../config";
-import icon from "../assets/icon.png";
 
 interface Props {
   title?: string;
@@ -19,7 +18,7 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href={icon.src} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <meta name="description" content={description} />
 
