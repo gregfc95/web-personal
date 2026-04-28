@@ -1,0 +1,27 @@
+---
+interface Props {
+  name: string;
+  icon: string;
+  detail: string;
+}
+
+const { name, icon, detail } = Astro.props;
+---
+
+<div
+  class="group p-unit-lg glass-card rounded-xl hover:border-primary-container transition-all text-center"
+>
+  <div
+    class="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center mx-auto mb-unit-md group-hover:scale-110 transition-transform"
+  >
+    <span class="material-symbols-outlined text-primary-container text-3xl">
+      {icon}
+    </span>
+  </div>
+  <h3 class="font-headline-md text-headline-md text-on-surface mb-unit-xs">
+    {name}
+  </h3>
+  <p class="text-xs text-on-surface-variant uppercase tracking-widest">
+    {detail}
+  </p>
+</div>

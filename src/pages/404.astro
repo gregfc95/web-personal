@@ -2,16 +2,26 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout>
-  <div class="hero absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-    <div class="hero-content text-center">
-      <div class="max-w-md">
-        <h1 class="text-5xl font-bold">404</h1>
-        <p class="text-lg text-neutral-content py-5">
-          The page you were looking for doesn't exist.
-        </p>
-        <a href="/" class="link link-accent">Go back home</a>
+<Layout title="404 — Page Not Found">
+  <main
+    class="min-h-screen flex items-center justify-center px-margin-mobile bg-surface"
+  >
+    <div class="text-center max-w-md">
+      <div
+        class="font-headline-xl text-[120px] md:text-[160px] text-primary-container leading-none tracking-tighter"
+      >
+        404
       </div>
+      <p class="font-body-lg text-on-surface-variant py-unit-md">
+        The page you're looking for doesn't exist.
+      </p>
+      <a
+        href="/"
+        class="bg-primary-container text-on-primary px-unit-lg py-unit-md rounded-lg font-label-caps text-label-caps inline-flex items-center gap-unit-sm hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all"
+      >
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        BACK HOME
+      </a>
     </div>
-  </div></Layout
->
+  </main>
+</Layout>

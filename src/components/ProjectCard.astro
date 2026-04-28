@@ -1,0 +1,78 @@
+---
+import type { Project } from "../config";
+
+type Props = Project;
+
+const { name, description, tags, url, status, gradient, cta } = Astro.props;
+
+const isLive = status === "live" && !!url;
+---
+
+<article
+  class="group bg-surface-container-high rounded-xl overflow-hidden border border-white/5 hover:border-primary-container hover:-translate-y-1 transition-all duration-300"
+>
+  <div
+    class={`aspect-video relative overflow-hidden bg-gradient-to-br ${gradient} flex items-center justify-center`}
+  >
+    <span
+      class="material-symbols-outlined text-[80px] text-white/20 group-hover:text-white/30 transition-colors"
+    >
+      code_blocks
+    </span>
+    {
+      !isLive && (
+        <span class="absolute top-3 right-3 px-2 py-1 bg-surface-container/80 backdrop-blur text-[10px] font-label-caps text-on-surface-variant rounded border border-white/10 uppercase">
+          In Progress
+        </span>
+      )
+    }
+  </div>
+  <div class="p-unit-lg">
+    <div class="flex flex-wrap gap-unit-xs mb-unit-sm">
+      {
+        tags.map((tag) => (
+          <span class="bg-white/5 text-secondary-container text-[10px] font-bold px-2 py-0.5 rounded border border-secondary-container/20 uppercase">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+    <h3 class="font-headline-md text-headline-md text-on-surface mb-unit-sm">
+      {name}
+    </h3>
+    <p class="font-body-md text-on-surface-variant mb-unit-lg line-clamp-3">
+      {description}
+    </p>
+    <div class="flex justify-between items-center">
+      {
+        isLive ? (
+          <a
+            href={url!}
+            target="_blank"
+            rel="noreferrer"
+            class="text-primary-container font-label-caps text-sm hover:underline"
+          >
+            {cta ?? "View Repo"}
+          </a>
+        ) : (
+          <span class="text-on-surface-variant/60 font-label-caps text-sm">
+            Coming Soon
+          </span>
+        )
+      }
+      {
+        isLive && (
+          <a
+            href={url!}
+            target="_blank"
+            rel="noreferrer"
+            class="text-on-surface-variant hover:text-primary-container transition-colors"
+            aria-label={`Open ${name} on GitHub`}
+          >
+            <span class="material-symbols-outlined">open_in_new</span>
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>

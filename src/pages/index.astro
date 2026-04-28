@@ -1,136 +1,406 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import FloatingBox from "../components/SmallBox.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import SkillCard from "../components/SkillCard.astro";
 import { Picture } from "astro:assets";
-import iconImage from "../assets/jose-profile.jpeg";
+import profilePhoto from "../assets/jose-profile.jpg";
 import { Config } from "../config";
 
-const years = () => {
-  const start = new Date(Config.me.started);
-  const now = new Date();
-  return now.getFullYear() - start.getFullYear();
-};
-
-import { getCollection } from "astro:content";
-const posts = (await getCollection("posts")).sort(function (
-  first: any,
-  second: any
-) {
-  return second.data.publishedAt.getTime() - first.data.publishedAt.getTime();
-});
+const { me, socials, projects, skills, resumeUrl } = Config;
 ---
 
 <Layout>
-  <main>
-    <div class="flex flex-col gap-20">
-      <article class="md:flex-row-reverse md:justify-end md:gap-12">
-        <div class="flex flex-row justify-between sm:grid-cols-3">
-          <div class="col-span-2 flex flex-col gap-6 md:gap-8 my-auto">
-            <h1 class="text-3xl">Hi, I’m {Config.me.name.split(" ")[0]}</h1>
-            <h2 class="w-auto sm:w-[85%] md:w-[90%] leading-6">
-              I am a <strong class="font-normal text-primary"
-                >{Config.me.job}</strong
-              > with over
-              <strong class="font-normal text-primary">{years} years</strong> of
-              experience. I am currently working with<strong
-                class="font-normal text-primary"
-              >
-                {Config.me.stack}</strong
-              >. Outside of programming I like to {Config.me.hobby}.
-            </h2>
-            <div class="custom-breadcrumbs">
-              <ul>
-                {
-                  Object.keys(Config.socials).map((social) => (
-                    <li>
-                      <a
-                        href={
-                          Config.socials[social as keyof typeof Config.socials]
-                        }
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        {social.charAt(0).toUpperCase() + social.slice(1)}
-                      </a>
-                    </li>
-                  ))
-                }
-              </ul>
-            </div>
+  <!-- Top Nav -->
+  <header
+    class="sticky top-0 z-50 w-full bg-surface/80 backdrop-blur-md border-b border-white/10"
+  >
+    <div
+      class="max-w-container-max mx-auto flex items-center justify-between px-margin-mobile md:px-unit-lg h-16"
+    >
+      <a
+        href="/"
+        class="font-headline-md text-xl font-black tracking-tighter text-primary-container"
+      >
+        {me.handle}
+      </a>
+
+      <nav
+        class="hidden md:flex items-center gap-unit-lg font-headline-md text-sm uppercase tracking-widest"
+      >
+        <a
+          href="#projects"
+          class="text-on-surface/70 hover:text-primary-container transition-colors"
+          >Projects</a
+        >
+        <a
+          href="#skills"
+          class="text-on-surface/70 hover:text-primary-container transition-colors"
+          >Skills</a
+        >
+        <a
+          href="#about"
+          class="text-on-surface/70 hover:text-primary-container transition-colors"
+          >About</a
+        >
+      </nav>
+
+      <div class="flex items-center gap-unit-md">
+        <div
+          class="hidden sm:flex items-center gap-unit-sm border-r border-white/10 pr-unit-md"
+        >
+          <a
+            href={socials.github}
+            target="_blank"
+            rel="noreferrer"
+            class="text-on-surface-variant hover:text-primary-container transition-colors"
+            aria-label="GitHub"
+          >
+            <span class="material-symbols-outlined text-xl">code</span>
+          </a>
+          <a
+            href={socials.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            class="text-on-surface-variant hover:text-primary-container transition-colors"
+            aria-label="LinkedIn"
+          >
+            <span class="material-symbols-outlined text-xl">share</span>
+          </a>
+          <a
+            href={socials.email}
+            class="text-on-surface-variant hover:text-primary-container transition-colors"
+            aria-label="Email"
+          >
+            <span class="material-symbols-outlined text-xl"
+              >alternate_email</span
+            >
+          </a>
+        </div>
+        <a
+          href={resumeUrl}
+          target="_blank"
+          rel="noreferrer"
+          class="bg-primary-container text-on-primary px-unit-md py-unit-xs rounded-lg font-label-caps text-label-caps uppercase active:scale-95 transition-transform"
+        >
+          Resume
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="pb-24 md:pb-0">
+    <!-- Hero -->
+    <section
+      class="relative overflow-hidden min-h-[80vh] md:min-h-[700px] flex items-center"
+    >
+      <div class="absolute inset-0 z-0">
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-surface via-surface/80 to-surface/20 z-10"
+        >
+        </div>
+        <div
+          class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(0,240,255,0.15),_transparent_60%)]"
+        >
+        </div>
+        <div
+          class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(47,248,1,0.08),_transparent_60%)]"
+        >
+        </div>
+      </div>
+      <div
+        class="relative z-20 max-w-container-max mx-auto px-margin-mobile md:px-unit-lg w-full pt-unit-xl pb-unit-lg"
+      >
+        <div
+          class="inline-block px-3 py-1 mb-unit-md bg-primary-container/10 border border-primary-container/20 rounded-lg"
+        >
+          <span class="text-label-caps font-label-caps text-primary-container">
+            AVAILABLE FOR HIRE
+          </span>
+        </div>
+
+        <h1
+          class="font-headline-xl text-[44px] md:text-headline-xl text-on-background tracking-tighter mb-unit-md leading-[1.05] max-w-4xl"
+        >
+          Software Engineer building <span class="text-primary-container"
+            >React</span
+          > & <span class="text-primary-container">Python</span> apps with <span
+            class="text-primary-container">SOLID</span
+          > architecture.
+        </h1>
+
+        <p
+          class="font-body-lg text-on-surface-variant mb-unit-lg max-w-xl text-base md:text-body-lg"
+        >
+          Specialist in modular, high-performance web applications. Currently
+          architecting React systems and reducing technical debt at Ruvixx Inc.
+        </p>
+
+        <div class="flex flex-wrap gap-unit-md">
+          <a
+            href="#projects"
+            class="bg-primary-container text-on-primary px-unit-lg py-unit-md rounded-lg font-label-caps text-label-caps flex items-center gap-unit-sm hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all"
+          >
+            VIEW MY WORK
+            <span class="material-symbols-outlined text-[18px]"
+              >arrow_forward</span
+            >
+          </a>
+          <a
+            href="#about"
+            class="border border-primary-container text-primary-container px-unit-lg py-unit-md rounded-lg font-label-caps text-label-caps hover:bg-primary-container/10 transition-all"
+          >
+            ABOUT ME
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-unit-xl bg-surface">
+      <div
+        class="max-w-container-max mx-auto px-margin-mobile md:px-unit-lg grid md:grid-cols-2 gap-unit-xl items-center"
+      >
+        <div class="relative max-w-md mx-auto md:mx-0 w-full">
+          <div
+            class="absolute -inset-4 bg-primary-container/10 blur-3xl rounded-full"
+          >
           </div>
-          <div class="ml-auto hidden sm:block">
-            <div class="avatar">
-              <div class="w-60 rounded">
-                <Picture
-                  src={iconImage}
-                  formats={["avif", "webp","png","jpg"]}
-                  alt="Profile icon"
-                  loading="eager"
-                />
-              </div>
-            </div>
+          <div class="relative glass-card p-unit-sm rounded-xl">
+            <Picture
+              src={profilePhoto}
+              formats={["avif", "webp"]}
+              alt={`Portrait of ${me.name}`}
+              loading="eager"
+              class="rounded-lg w-full aspect-[4/5] object-cover object-top transition-all duration-500"
+            />
           </div>
         </div>
-      </article>
- <!-- 
-      <article class="flex flex-col gap-8">
-        <header class="flex w-full flex-row justify-between gap-2">
-          <h3 class="text-lg">Featured projects</h3>
-          <a
-            href={Config.me.projectLink}
-            class="text-sm text-primary underline decoration-dashed underline-offset-8"
-            target="_self"
-            rel="noreferrer"
-            >See all projects
-          </a>
-        </header>
-        <section
-          class="grid grid-cols-1 gap-4 sm:grid-cols-2 justify-center items-stretch"
-        >
-          {
-            Object.keys(Config.projects).map((project) => (
-              <FloatingBox
-                title={project}
-                href={
-                  Config.projects[project as keyof typeof Config.projects].url
-                }
-                tags={
-                  Config.projects[project as keyof typeof Config.projects].tags
-                }
-              />
-            ))
-          }
-        </section>
-      </article>
+        <div>
+          <span
+            class="font-label-caps text-label-caps text-primary-container mb-unit-sm block"
+          >
+            ABOUT ME
+          </span>
+          <h2
+            class="font-headline-lg text-[32px] md:text-headline-lg text-primary mb-unit-md leading-tight"
+          >
+            Engineered for Performance
+          </h2>
+          <p class="font-body-md text-on-surface-variant mb-unit-md">
+            With {me.yearsOfExperience}+ years across QA and software engineering,
+            I bridge complex backend logic and pixel-perfect frontend execution.
+            My approach: code should be as elegant on the inside as the interface
+            it powers.
+          </p>
+          <p class="font-body-md text-on-surface-variant mb-unit-lg">
+            I architect modular React components at Ruvixx Inc, leading
+            technical-debt reduction with SOLID principles and optimizing
+            data-intensive views with custom hooks and memoization.
+          </p>
+          <div class="flex flex-wrap gap-unit-sm">
+            <span
+              class="bg-white/5 text-secondary-container text-label-caps font-label-caps px-unit-sm py-1 rounded border border-secondary-container/20 uppercase"
+              >React</span
+            >
+            <span
+              class="bg-white/5 text-secondary-container text-label-caps font-label-caps px-unit-sm py-1 rounded border border-secondary-container/20 uppercase"
+              >Python</span
+            >
+            <span
+              class="bg-white/5 text-secondary-container text-label-caps font-label-caps px-unit-sm py-1 rounded border border-secondary-container/20 uppercase"
+              >TypeScript</span
+            >
+            <span
+              class="bg-white/5 text-secondary-container text-label-caps font-label-caps px-unit-sm py-1 rounded border border-secondary-container/20 uppercase"
+              >SOLID</span
+            >
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <article class="flex flex-col gap-8">
-        <header class="flex w-full flex-row justify-between gap-2">
-          <h3 class="text-lg">Latest posts</h3>
+    <!-- Skills -->
+    <section id="skills" class="py-unit-xl bg-surface-container-low">
+      <div
+        class="max-w-container-max mx-auto px-margin-mobile md:px-unit-lg"
+      >
+        <div class="text-center mb-unit-xl">
+          <span
+            class="font-label-caps text-label-caps text-primary-container mb-unit-sm block"
+          >
+            TECHNICAL ARSENAL
+          </span>
+          <h2
+            class="font-headline-lg text-[32px] md:text-headline-lg text-primary mb-unit-sm leading-tight"
+          >
+            Tools & Technologies
+          </h2>
+          <p class="font-body-md text-on-surface-variant max-w-xl mx-auto">
+            The stack I rely on to ship production-grade software.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+          {skills.map((skill) => <SkillCard {...skill} />)}
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="py-unit-xl bg-surface">
+      <div
+        class="max-w-container-max mx-auto px-margin-mobile md:px-unit-lg"
+      >
+        <div
+          class="flex flex-col md:flex-row md:justify-between md:items-end mb-unit-xl gap-unit-md"
+        >
+          <div>
+            <span
+              class="font-label-caps text-label-caps text-primary-container mb-unit-sm block"
+            >
+              PROJECTS
+            </span>
+            <h2
+              class="font-headline-lg text-[32px] md:text-headline-lg text-primary mb-unit-sm leading-tight"
+            >
+              Selected Work
+            </h2>
+            <p class="font-body-md text-on-surface-variant">
+              A showcase of recent engineering challenges.
+            </p>
+          </div>
           <a
-            href="/posts"
-            class="text-sm text-primary underline decoration-dashed underline-offset-8"
+            href={socials.github}
+            target="_blank"
             rel="noreferrer"
-            >See all posts
+            class="text-primary-container font-label-caps text-label-caps flex items-center gap-unit-xs hover:gap-unit-sm transition-all w-fit"
+          >
+            VIEW ALL ON GITHUB
+            <span class="material-symbols-outlined text-[18px]"
+              >arrow_outward</span
+            >
           </a>
-        </header>
-        <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 mx-auto">
-          {
-            posts.map((post: any) => (
-              <FloatingBox
-                title={post.data.title}
-                publishedAt={post.data.publishedAt.toLocaleDateString("en-us", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-                description={post.data.description}
-                href={"/posts/" + post.slug}
-              />
-            ))
-          }
-        </section>
-      </article>
-    -->  
-    </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+          {projects.map((project) => <ProjectCard {...project} />)}
+        </div>
+      </div>
+    </section>
+
+    <!-- Code Snippet -->
+    <section class="py-unit-xl bg-surface">
+      <div
+        class="max-w-container-max mx-auto px-margin-mobile md:px-unit-lg"
+      >
+        <div
+          class="bg-surface-container-lowest border border-white/10 rounded-xl overflow-hidden max-w-2xl mx-auto"
+        >
+          <div
+            class="flex items-center justify-between px-unit-md py-unit-sm bg-surface-container/50 border-b border-white/5"
+          >
+            <div class="flex gap-1.5">
+              <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+              <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+              <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+            </div>
+            <span
+              class="font-label-caps text-label-caps text-on-surface-variant"
+            >
+              identity.ts
+            </span>
+          </div>
+          <pre
+            class="font-code-sm text-code-sm leading-relaxed p-unit-md overflow-x-auto"><code><span class="text-on-surface-variant">const</span> <span class="text-primary-container">engineer</span> = {`{`}
+  name: <span class="text-secondary-fixed-dim">'Jose Fernandez'</span>,
+  stack: [<span class="text-secondary-fixed-dim">'React'</span>, <span class="text-secondary-fixed-dim">'Python'</span>, <span class="text-secondary-fixed-dim">'TypeScript'</span>],
+  focus: <span class="text-secondary-fixed-dim">'SOLID architecture & performance'</span>,
+  motto: () =&gt; <span class="text-primary-container">'Build. Refactor. Ship.'</span>
+{`}`};</code></pre>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-unit-xl">
+    <div
+      class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-unit-md px-margin-mobile md:px-unit-lg"
+    >
+      <div
+        class="font-headline-md text-lg font-bold text-primary-container tracking-tighter"
+      >
+        {me.handle}
+      </div>
+      <div
+        class="flex gap-unit-lg font-headline-md text-xs tracking-widest uppercase text-on-surface-variant"
+      >
+        <a
+          href={socials.github}
+          target="_blank"
+          rel="noreferrer"
+          class="hover:text-primary-container transition-colors">GitHub</a
+        >
+        <a
+          href={socials.linkedin}
+          target="_blank"
+          rel="noreferrer"
+          class="hover:text-primary-container transition-colors">LinkedIn</a
+        >
+        <a
+          href={socials.email}
+          class="hover:text-primary-container transition-colors">Email</a
+        >
+      </div>
+      <div
+        class="font-headline-md text-xs tracking-widest uppercase text-on-surface-variant/60 text-center"
+      >
+        © {new Date().getFullYear()} {me.name.toUpperCase()}
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Bottom Nav -->
+  <nav
+    class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-unit-md py-unit-sm bg-surface/90 backdrop-blur-lg border-t border-white/10"
+  >
+    <a
+      href="#"
+      class="flex flex-col items-center text-primary-container bg-primary-container/10 rounded-md px-3 py-1 active:scale-90 duration-150"
+    >
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span
+        class="font-headline-md text-[10px] uppercase font-medium mt-0.5"
+        >Home</span
+      >
+    </a>
+    <a
+      href="#projects"
+      class="flex flex-col items-center text-on-surface-variant active:scale-90 duration-150"
+    >
+      <span class="material-symbols-outlined text-[20px]">code_blocks</span>
+      <span
+        class="font-headline-md text-[10px] uppercase font-medium mt-0.5"
+        >Projects</span
+      >
+    </a>
+    <a
+      href="#skills"
+      class="flex flex-col items-center text-on-surface-variant active:scale-90 duration-150"
+    >
+      <span class="material-symbols-outlined text-[20px]">layers</span>
+      <span
+        class="font-headline-md text-[10px] uppercase font-medium mt-0.5"
+        >Stack</span
+      >
+    </a>
+    <a
+      href={socials.email}
+      class="flex flex-col items-center text-on-surface-variant active:scale-90 duration-150"
+    >
+      <span class="material-symbols-outlined text-[20px]">alternate_email</span>
+      <span
+        class="font-headline-md text-[10px] uppercase font-medium mt-0.5"
+        >Contact</span
+      >
+    </a>
+  </nav>
 </Layout>
