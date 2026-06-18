@@ -73,7 +73,7 @@ export const Config = {
     { name: "Frontend", icon: "web", detail: "React, TypeScript, Astro" },
     { name: "Backend", icon: "dns", detail: "Node.js, Python, REST APIs" },
     { name: "Database", icon: "database", detail: "MongoDB, SQL" },
-    { name: "Infrastructure", icon: "cloud", detail: "Docker, CI/CD, Git" },
+    { name: "DevOps", icon: "cloud", detail: "Docker, CI/CD, Git" },
   ] as Skill[],
   og: {
     image: icon.src,
